@@ -78,10 +78,10 @@ class ResponseManager:
     def get_response_summoner(self) -> None:
         #https://oc1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/eLUepsw-GPkwrAjHKonm_3srlxG3NO8p66150ZgOQR-MT8QJkCePKbe3iOLVMtvOSCCRiB--pJ0aZg?api_key=RGAPI-65d95742-26d6-4830-9e9c-08d793068818
         puuid = self.puuid
+        print(puuid)
 
         #API URL
         api_url = "https://oc1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/" + puuid + "?api_key=" + self.KEY
-
 
         #call API
         response = requests.get(api_url)
@@ -94,13 +94,20 @@ class ResponseManager:
 
         #https://oc1.api.riotgames.com/lol/league/v4/entries/by-summoner/H3EMMQQmQ85Yvu5ZkvPl8NWB2zxpACdk0lFZK_8627Zjltc?api_key=RGAPI-65d95742-26d6-4830-9e9c-08d793068818
         summoner_id = self.summoner_id
-
+        print(summoner_id)
         #API URL
         api_url = "https://oc1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + summoner_id + "?api_key=" + self.KEY
-
+        
         #call API
         response = requests.get(api_url)
-        data = response.json()[2]
+        
+        try:
+            data = response.json()[2]
+        except IndexError as i:
+            try:
+                data = response.json()[0]
+            except IndexError as i:
+                return "UNRANKED"
 
         self.tier = data['tier']
         self.rank = data['rank']
@@ -112,7 +119,7 @@ class ResponseManager:
         return 
 
     def get_response_icon(self) -> str:
-        return f"https://ddragon.leagueoflegends.com/cdn/11.20.1/img/profileicon/{self.profile_icon_id}.png"
+        return f"https://ddragon.leagueoflegends.com/cdn/14.11.1/img/profileicon/{self.profile_icon_id}.png"
 
     def get_response_level(self) -> str:
         return str(self.summoner_level)
