@@ -84,7 +84,7 @@ async def send_message(message: Message, user_message: str, type:str) -> None:
         await message.reply(embed=final_response, mention_author=True, delete_after=100) #delete after 100 seconds
     except Exception as e:
         print(e)
-        await message.reply("Sorry, I'm not sure how to respond to that", delete_after=10)
+        await message.reply("Sorry, can't display the information you want right now. ", delete_after=10)
 
 @client.event
 async def on_ready() -> None:

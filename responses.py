@@ -100,14 +100,15 @@ class ResponseManager:
         
         #call API
         response = requests.get(api_url)
+        data = None
         
-        try:
-            data = response.json()[2]
-        except IndexError as i:
-            try:
-                data = response.json()[0]
-            except IndexError as i:
-                return "UNRANKED"
+        for i in range(len(response.json())):
+            if response.json()[i]['queueType'] == "RANKED_SOLO_5x5":
+                data = response.json()[i]
+                break
+        
+        if data == None:
+            return
 
         self.tier = data['tier']
         self.rank = data['rank']
