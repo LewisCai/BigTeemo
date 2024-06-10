@@ -14,7 +14,12 @@ class ResponseManager:
         self.account_id = ""
         self.profile_icon_id = ""
         self.summoner_level = ""
-
+        self.tier = ""
+        self.rank = ""
+        self.lp = "" #league points
+        self.wins = ""
+        self.losses = ""
+        self.win_rate = ""
         self.get_response_summoner()
 
 
@@ -85,6 +90,24 @@ class ResponseManager:
         self.account_id = data['accountId']
         self.profile_icon_id = data['profileIconId']
         self.summoner_level = data['summonerLevel']
+
+        #https://oc1.api.riotgames.com/lol/league/v4/entries/by-summoner/H3EMMQQmQ85Yvu5ZkvPl8NWB2zxpACdk0lFZK_8627Zjltc?api_key=RGAPI-65d95742-26d6-4830-9e9c-08d793068818
+        summoner_id = self.summoner_id
+
+        #API URL
+        api_url = "https://oc1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + summoner_id + "?api_key=" + self.KEY
+
+        #call API
+        response = requests.get(api_url)
+        data = response.json()[2]
+
+        self.tier = data['tier']
+        self.rank = data['rank']
+        self.lp = data['leaguePoints']
+        self.wins = data['wins']
+        self.losses = data['losses']
+        self.win_rate = str(round((int(self.wins)/(int(self.wins)+int(self.losses)))*100, 2)) + "%"
+
         return 
 
     def get_response_icon(self) -> str:
@@ -92,3 +115,21 @@ class ResponseManager:
 
     def get_response_level(self) -> str:
         return str(self.summoner_level)
+    
+    def get_response_tier(self) -> str:
+        return self.tier
+    
+    def get_response_rank(self) -> str:
+        return self.rank
+    
+    def get_response_lp(self) -> str:
+        return str(self.lp)
+    
+    def get_response_wins(self) -> str:
+        return str(self.wins)
+
+    def get_response_losses(self) -> str:
+        return str(self.losses)
+    
+    def get_response_win_rate(self) -> str:
+        return self.win_rate
