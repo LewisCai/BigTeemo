@@ -27,7 +27,7 @@ async def send_message(message: Message, user_message: str, type:str) -> None:
             bio = "Level: " + level + "\n" + "Best "+champ_mastery[0][0]+ " player"
             
             #create embed, which is a fancy message
-            final_response = Embed(title=user_message[1:], description= bio, type="rich")
+            final_response = Embed(title=user_message[1:], description= bio, type="rich", color=0x00ff00)
             final_response.set_thumbnail(url=icon_url)
 
             for i in range(len(champ_mastery)):
@@ -45,45 +45,40 @@ async def send_message(message: Message, user_message: str, type:str) -> None:
 
             #get specific rank icon
             if tier == "UNRANKED":
-                bio = "Unranked" + "\n" + "No rank"
                 rank_icon_url = "https://static.wikia.nocookie.net/leagueoflegends/images/1/1c/Season_2013_-_Unranked.png/revision/latest?cb=20181116163918"
             elif tier == "IRON":
-                bio = tier + " " + rank + "\n"
                 rank_icon_url = "https://static.wikia.nocookie.net/leagueoflegends/images/f/fe/Season_2022_-_Iron.png/revision/latest/scale-to-width-down/250?cb=20220105213520"
             elif tier == "BRONZE":
-                bio = tier + " " + rank + "\n"
                 rank_icon_url = "https://static.wikia.nocookie.net/leagueoflegends/images/e/e9/Season_2022_-_Bronze.png/revision/latest/scale-to-width-down/250?cb=20220105214224"
             elif tier == "SILVER":
-                bio = tier + " " + rank + "\n"
                 rank_icon_url = "https://static.wikia.nocookie.net/leagueoflegends/images/4/44/Season_2022_-_Silver.png/revision/latest/scale-to-width-down/250?cb=20220105214225"
             elif tier == "GOLD":
-                bio = tier + " " + rank + "\n"
                 rank_icon_url = "https://static.wikia.nocookie.net/leagueoflegends/images/8/8d/Season_2022_-_Gold.png/revision/latest/scale-to-width-down/250?cb=20220105214225"
             elif tier == "PLATINUM":
-                bio = tier + " " + rank + "\n"
                 rank_icon_url = "https://static.wikia.nocookie.net/leagueoflegends/images/3/3b/Season_2022_-_Platinum.png/revision/latest/scale-to-width-down/250?cb=20220105214225"
             elif tier == "DIAMOND":
-                bio = tier + " " + rank + "\n"
                 rank_icon_url = "https://static.wikia.nocookie.net/leagueoflegends/images/3/37/Season_2023_-_Diamond.png/revision/latest/scale-to-width-down/250?cb=20231007195826"
             elif tier == "MASTER":
-                bio = tier + " " + rank + "\n"
                 rank_icon_url = "https://static.wikia.nocookie.net/leagueoflegends/images/e/eb/Season_2022_-_Master.png/revision/latest/scale-to-width-down/250?cb=20220105214311"
             elif tier == "GRANDMASTER":
-                bio = tier + " " + rank + "\n"
                 rank_icon_url = "https://static.wikia.nocookie.net/leagueoflegends/images/f/fc/Season_2022_-_Grandmaster.png/revision/latest/scale-to-width-down/250?cb=20220105214312"
             elif tier == "CHALLENGER":
-                bio = tier + " " + rank + "\n"
                 rank_icon_url = "https://static.wikia.nocookie.net/leagueoflegends/images/0/02/Season_2022_-_Challenger.png/revision/latest/scale-to-width-down/250?cb=20220105214312"
 
             #create embed, which is a fancy message
-            final_response = Embed(title=user_message[1:], description= bio, type="rich")
+            if float(win_rate[:-2]) < 50:
+                bio = "Win Rate: " + win_rate + "%\n" + "You're a noob"
+            else:
+                bio = "Win Rate: " + win_rate + "%\n" + "You're a pro"
+
+            final_response = Embed(title=user_message[1:], description= bio, type="rich", color=0x00ff00)
             final_response.set_thumbnail(url=icon_url)
             final_response.set_image(url=rank_icon_url)
 
+            final_response.add_field(name="Rank", value= tier + " " + rank + "\n", inline=True)
             final_response.add_field(name="LP", value=lp, inline=True)
             final_response.add_field(name="Wins", value=wins, inline=True)
             final_response.add_field(name="Losses", value=losses, inline=True)
-            final_response.add_field(name="Win Rate", value=win_rate, inline=True)
 
             pass
         await message.reply(embed=final_response, mention_author=True, delete_after=100) #delete after 100 seconds

@@ -82,6 +82,7 @@ class ResponseManager:
         #API URL
         api_url = "https://oc1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/" + puuid + "?api_key=" + self.KEY
 
+
         #call API
         response = requests.get(api_url)
         data = response.json()
