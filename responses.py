@@ -1,4 +1,3 @@
-from random import choice, randint
 import os
 from dotenv import load_dotenv
 import requests
